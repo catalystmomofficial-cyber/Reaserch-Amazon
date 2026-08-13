@@ -9,6 +9,9 @@ description: >
   Twitter/X, Reddit, Facebook, Instagram, YouTube, GitHub, Bilibili, XiaoHongShu,
   Xiaoyuzhou Podcast, LinkedIn/jobs/recruiting, V2EX, Xueqiu (stocks), RSS.
 
+  Additionally MUST USE for Amazon-specific product, ASIN, search, brand, or
+  seller "Sold by" verification using the integrated Scrape.do Amazon Scraper.
+
   15 platforms, multi-backend routing (OpenCLI / per-platform CLIs / APIs).
   Zero config for 6 channels. Run `agent-reach doctor --json` to see which
   backend serves each platform right now.
@@ -57,6 +60,7 @@ these platforms — do not invent your own approach.**
 | Web pages / articles / RSS | web | [references/web.md](references/web.md) |
 | YouTube / Bilibili / podcast transcripts | video | [references/video.md](references/video.md) |
 | Xueqiu / stock quotes | finance | [references/finance.md](references/finance.md) |
+| Amazon search, PDP, and brand seller offers | shopping | [references/amazon.md](references/amazon.md) |
 
 ## Zero-config quick commands
 
@@ -78,6 +82,21 @@ curl -s "https://www.v2ex.com/api/topics/hot.json" -H "User-Agent: agent-reach/1
 
 # Bilibili search (bili-cli, no login needed)
 bili search "query" --type video -n 5
+```
+
+## Amazon Data Extraction & Verification (via Scrape.do)
+
+Configure the API token environment variable: `export SCRAPEDO_API_TOKEN="your-token"`.
+
+```bash
+# Search Amazon US/UK
+python3 /app/agent/skills/agent-reach/tools/amazon/amazon_scraper.py search "laptop stands" [geocode=us/gb] [page=1]
+
+# Extract product metadata & brand
+python3 /app/agent/skills/agent-reach/tools/amazon/amazon_scraper.py pdp "B0C7BKZ883" [geocode=us/gb]
+
+# Extract seller/ships-from details (Buy Box info)
+python3 /app/agent/skills/agent-reach/tools/amazon/amazon_scraper.py offers "B0DGJ7HYG1" [geocode=us/gb]
 ```
 
 ## Login-backed platforms (pick by doctor's active_backend)
@@ -143,6 +162,7 @@ chains — note: reference docs are written in Chinese, commands are universal):
 - [Web](references/web.md) — Jina Reader, RSS
 - [Video](references/video.md) — YouTube, Bilibili, Xiaoyuzhou
 - [Finance](references/finance.md) — Xueqiu quotes, search and market content
+- [Amazon](references/amazon.md) — Amazon Product, Search, and Seller extraction (Scrape.do)
 
 ## Configure a channel
 
